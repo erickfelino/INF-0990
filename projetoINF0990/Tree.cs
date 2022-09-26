@@ -1,4 +1,8 @@
 public class Tree : Obstacle, Rechargeable {
+    /// <summary>
+    /// Classe para criar o objeto Tree
+    /// </summary>
+    /// <returns></returns>
 
     public Tree() : base("$$ ") {}
 

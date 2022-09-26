@@ -1,16 +1,28 @@
 ﻿public class JewelCollector {
-
+    /// <summary>
+    /// Classe que contem a função Main para movimentação e captação dos eventos
+    /// </summary>
+    /// 
+/// <summary>
+/// Funções
+/// </summary>
   delegate void MoveNorth();
   delegate void MoveSouth();
   delegate void MoveEast();
   delegate void MoveWest();
 
+/// <summary>
+/// Eventos
+/// </summary>
   static event MoveNorth OnMoveNorth; 
   static event MoveSouth OnMoveSouth; 
   static event MoveEast OnMoveEast;
   static event MoveWest OnMoveWest;     
 
   public static void Main() {
+    /// <summary>
+    /// Função Main do Jogo
+    /// </summary>
 
       int w = 10;
       int h = 10;
@@ -50,6 +62,9 @@
 
     private static bool Run(Robot robot)
     {
+        /// <summary>
+        /// Método de movimentação do jogador
+        /// </summary>
 
         OnMoveNorth += robot.MoveNorth; 
         OnMoveSouth += robot.MoveSouth; 

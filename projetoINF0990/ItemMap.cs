@@ -1,5 +1,8 @@
 
 public abstract class ItemMap {
+    /// <summary>
+    /// Classe para tratar ícones e simbolos do jogo
+    /// </summary>
 
     private string Symbol;
 
