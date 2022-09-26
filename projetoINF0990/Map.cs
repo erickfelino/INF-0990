@@ -4,6 +4,7 @@ public class Map {
     private ItemMap[,] Matriz;
     public int h {get; private set;}
     public int w {get; private set;}
+    public bool exploded;
 
     public Map(int w=10, int h=10, int level=1)
     {
@@ -44,7 +45,17 @@ public class Map {
         }
         else
         {
+            if (Matriz[x, y] is Damage r){
+
+                GetExplosion(x_old, y_old,x,y);
+                exploded = true;
+
+            }
+            else{
+
             throw new OccupiedPositionException();
+            
+            }
         }
 
     }
@@ -66,25 +77,6 @@ public class Map {
         return NearJewels;
 
     }
-
-    public List<Obstacle> GetDamage(int x, int y, Robot r){
-
-        List<Obstacle> NearObstacle = new List<Obstacle>();
-
-        int[,] Coords = GenerateCoord(x, y);
-
-        for (int i = 0; i < Coords.GetLength(0); i++) {
-
-            Obstacle? obstacle = GetObstacle(Coords[i, 0], Coords[i, 1]);
-            
-            if (obstacle is not null) r.energy = r.energy -10;
-        
-        }
-
-        return NearObstacle;
-
-    }
-
     private Jewel? GetJewel(int x, int y)
     {
 
@@ -97,24 +89,33 @@ public class Map {
         return null;
     }
 
-    private Obstacle? GetObstacle(int x, int y)
+    private void GetExplosion(int x_old, int y_old, int x, int y)
     {
 
-        if (Matriz[x, y] is Obstacle obstacle)
+        if (Matriz[x, y] is Damage damage)
         {
-            Matriz[x, y] = new Empty();
-            return obstacle;
+                Matriz[x, y] = Matriz[x_old, y_old];
+                Matriz[x_old, y_old] = new Empty();
+            
         }
-
-        return null;
     }
-
     public Rechargeable? GetRechargeable(int x, int y){
 
         int[,] Coords = GenerateCoord(x, y);
 
         for (int i = 0; i < Coords.GetLength(0); i++) 
             if (Matriz[Coords[i, 0], Coords[i, 1]] is Rechargeable r) return r;
+
+        return null;
+
+    }
+
+    public Damage? GetDamage(int x, int y){
+
+        int[,] Coords = GenerateCoord(x, y);
+
+        for (int i = 0; i < Coords.GetLength(0); i++) 
+            if (Matriz[Coords[i, 0], Coords[i, 1]] is Damage r) return r;
 
         return null;
 
@@ -221,7 +222,7 @@ public class Map {
 
         }
 
-        for(int x = 0; x < 10; x++)
+        for(int x = 0; x < 3; x++)
         {
             int xRandom = r.Next(0, w);
             int yRandom = r.Next(0, h);

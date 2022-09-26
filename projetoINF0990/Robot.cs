@@ -2,6 +2,7 @@
 public class Robot : ItemMap {
 
     public Map map {get; private set;}
+    public Radioactive radioactive {get; private set;}
     private int x, y;
     private List<Jewel> Bag = new List<Jewel>();
     public int energy {get; set;}
@@ -21,12 +22,31 @@ public class Robot : ItemMap {
         {
             map.Update(this.x, this.y, this.x-1, this.y);
             this.x--;
-            this.energy--;
+            if (map.exploded == true){
+                map.exploded = false;
+                this.energy -= 30;
+            }
+            else{
+                this.energy--;
+            }
+
+            Damage? DamageEnergy = map.GetDamage(this.x, this.y);
+            DamageEnergy?.Damage(this);
         } 
-        catch (Exception e)
+        catch (OccupiedPositionException e)
         {
 
+            Console.WriteLine($"Position {this.x-1}, {this.y} is occupied");
+            
         }
+        catch (OutOfMapException e)
+        {
+            Console.WriteLine($"Position {this.x-1}, {this.y} is out of map");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Position is prohibit");
+        }      
        
     }
 
@@ -36,11 +56,22 @@ public class Robot : ItemMap {
         {
             map.Update(this.x, this.y, this.x+1, this.y);
             this.x++;
-            this.energy--;
+            if (map.exploded == true){
+                map.exploded = false;
+                this.energy -= 30;
+            }
+            else{
+                this.energy--;
+            }
+
+            Damage? DamageEnergy = map.GetDamage(this.x, this.y);
+            DamageEnergy?.Damage(this);
         } 
         catch (OccupiedPositionException e)
         {
+
             Console.WriteLine($"Position {this.x+1}, {this.y} is occupied");
+            
         }
         catch (OutOfMapException e)
         {
@@ -59,14 +90,32 @@ public class Robot : ItemMap {
         {
             map.Update(this.x, this.y, this.x, this.y+1);
             this.y++;
-            this.energy--;
+            if (map.exploded == true){
+                map.exploded = false;
+                this.energy -= 30;
+            }
+            else{
+                this.energy--;
+            }
 
+            Damage? DamageEnergy = map.GetDamage(this.x, this.y);
+            DamageEnergy?.Damage(this);
+
+        }
+        catch (OccupiedPositionException e)
+        {
+
+            Console.WriteLine($"Position {this.x}, {this.y+1} is occupied");
             
+        }
+        catch (OutOfMapException e)
+        {
+            Console.WriteLine($"Position {this.x}, {this.y+1} is out of map");
         }
         catch (Exception e)
         {
-
-        }
+            Console.WriteLine($"Position is prohibit");
+        }      
         
     }
 
@@ -76,12 +125,31 @@ public class Robot : ItemMap {
         {
             map.Update(this.x, this.y, this.x, this.y-1);
             this.y--;
-            this.energy--;
+            if (map.exploded == true){
+                map.exploded = false;
+                this.energy -= 30;
+            }
+            else{
+                this.energy--;
+            }
+
+            Damage? DamageEnergy = map.GetDamage(this.x, this.y);
+            DamageEnergy?.Damage(this);
+        }
+        catch (OccupiedPositionException e)
+        {
+
+            Console.WriteLine($"Position {this.x}, {this.y-1} is occupied");
+            
+        }
+        catch (OutOfMapException e)
+        {
+            Console.WriteLine($"Position {this.x}, {this.y-1} is out of map");
         }
         catch (Exception e)
         {
-
-        }
+            Console.WriteLine($"Position is prohibit");
+        }  
         
     }
 
